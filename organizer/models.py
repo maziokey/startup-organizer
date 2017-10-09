@@ -44,6 +44,9 @@ class NewsLink(models.Model):
     def __str__(self):
         return "{}:{}".format(self.startup, self.title)
 
+    def get_absolute_url(self):
+        return self.startup.get_absolute_url()
+
     class Meta:
         verbose_name = 'news article'
         ordering = ['-pub_date']

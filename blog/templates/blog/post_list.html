@@ -1,12 +1,15 @@
 {% extends parent_template|default:"blog/base_blog.html" %}
 
 {% block title %}
-{{ block.super }} - Post List
+{{ block.super }} - Blog
 {% endblock %}
 
 {% block content %}
 
 {% for post in post_list %}
+<div class="">
+  <a href="{% url 'blog_post_create' %}">Write New Blog Post</a>
+</div>
   <article>
     <header>
       <h2><a href="{{ post.get_absolute_url }}">{{ post.title|title }}</a></h2>
