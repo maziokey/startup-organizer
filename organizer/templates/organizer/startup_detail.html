@@ -32,7 +32,12 @@
             </p>
             <ul>
               {% for newslink in startup.newslink_set.all %}
-                <li><a href="{{ newslink.link }}">{{ newslink.title|title }}</a></li>
+                <li>
+                  <a href="{{ newslink.link }}">{{ newslink.title|title }}</a>
+                  <ul>
+                    <li><a href="{{ newslink.get_update_url }}">Edit Link</a></li>
+                  </ul>
+                </li>
               {% endfor %}
             </ul>
           </section>
