@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import View
-from .utils import ObjectCreateMixin
+from .utils import ObjectCreateMixin, ObjectUpdateMixin, objectDeleteMixin
 #from django.http.response import HttpResponse, Http404
 #from django.template import Context, loader
 
-from .models import Tag, Startup
+from .models import Tag, Startup, NewsLink
 from .forms import TagForm, StartupForm, NewsLinkForm
 
 # Create your views here.
@@ -103,3 +103,31 @@ class NewsLinkUpdate(View):
         else:
             context = {'form': bound_form, 'newslink': newslink, }
             return render(request, self.template_name, context)
+
+class NewsLinkDelete(View):
+
+    def get(self, request, pk):
+        newslink = get_object_or_404(NewsLink, pk=pk)
+        return render(request, 'organizer/''newslink_confirm_delete.html', {'newslink': newslink})
+
+    def post(self, request, pk):
+        newslink = get_object_or_404(NewsLink, pk=pk)
+        startup = newslink.startup
+        newslink.delete()
+        return redirect(startup)
+
+
+class TagUpdate(ObjectUpdateMixin, View):
+    form_class = TagForm
+    model = Tag
+    template_name = ('organizer/tag_form_update.html')
+
+class StartupUpdate(ObjectUpdateMixin, View):
+    form_class = startup_form
+    model = Startup
+    template_name = ('organizer/startup_form_update.html')
+
+class TagDelete(objectDeleteMixin, View):
+    model = Tag
+    success_url = reverse_lazy('organizer_tag_list')
+    template_name = ('organizer/tag_confirm_delete.html')

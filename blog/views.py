@@ -61,3 +61,19 @@ class PostUpdate(View):
         else:
             context = {'form': bound_form, 'post': post, }
             return render(request, self.template_name, context)
+
+class PostDelete(View):
+
+    def get(self, request, year, month, slug):
+        post = get_object_or_404(Post, pub_date__year=year, pub_date__month=month, slug__iexact=slug)
+        return render(request, 'blog/post_confirm_delete.html', {'post': post})
+
+    def post(self, request, year, month, slug):
+        post = get_object_or_404(Post, pub_date__year=year, pub_date__month=month, slug__iexact=slug)
+        post.delete()
+        return redirect('blog_post_list')
+
+class StartupDelete(objectDeleteMixin, View):
+    model = Startup
+    success_url = reverse_lazy('organizer_startup_list')
+    template_name = ('organizer/startup_confirm_delete.html')
