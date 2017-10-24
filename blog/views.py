@@ -72,8 +72,3 @@ class PostDelete(View):
         post = get_object_or_404(Post, pub_date__year=year, pub_date__month=month, slug__iexact=slug)
         post.delete()
         return redirect('blog_post_list')
-
-class StartupDelete(objectDeleteMixin, View):
-    model = Startup
-    success_url = reverse_lazy('organizer_startup_list')
-    template_name = ('organizer/startup_confirm_delete.html')

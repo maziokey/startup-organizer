@@ -1,6 +1,7 @@
+from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import View
-from .utils import ObjectCreateMixin, ObjectUpdateMixin, objectDeleteMixin
+from .utils import ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
 #from django.http.response import HttpResponse, Http404
 #from django.template import Context, loader
 
@@ -123,11 +124,16 @@ class TagUpdate(ObjectUpdateMixin, View):
     template_name = ('organizer/tag_form_update.html')
 
 class StartupUpdate(ObjectUpdateMixin, View):
-    form_class = startup_form
+    form_class = StartupForm
     model = Startup
     template_name = ('organizer/startup_form_update.html')
 
-class TagDelete(objectDeleteMixin, View):
+class StartupDelete(ObjectDeleteMixin, View):
+    model = Startup
+    success_url = reverse_lazy('organizer_startup_list')
+    template_name = ('organizer/startup_confirm_delete.html')
+
+class TagDelete(ObjectDeleteMixin, View):
     model = Tag
     success_url = reverse_lazy('organizer_tag_list')
     template_name = ('organizer/tag_confirm_delete.html')

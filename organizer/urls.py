@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from .views import tag_list, tag_detail, startup_list, startup_detail, TagCreate, StartupCreate, NewsLinkCreate
+from .views import tag_list, tag_detail, startup_list, startup_detail, TagCreate, TagDelete, TagUpdate, StartupCreate, StartupUpdate, StartupDelete, NewsLinkCreate, NewsLinkUpdate, NewsLinkDelete
 
 urlpatterns = [
     url(r'^tag/$', tag_list, name='organizer_tag_list'),

@@ -36,7 +36,7 @@ class ObjectUpdateMixin:
             context = {'form': bound_form, self.model.__name__.lower(): obj,}
             return render(request, self.template_name, context)
 
-class objectDeleteMixin:
+class ObjectDeleteMixin:
     model = None
     success_url = ''
     template_name = ''
