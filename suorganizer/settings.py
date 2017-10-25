@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'organizer',
     'blog',
+    'contact',
 ]
 
 MIDDLEWARE = [
@@ -84,6 +85,15 @@ DATABASES = {
     }
 }
 
+# Email
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+SERVER_EMAIL = 'okeyluvsu2004@hotmail.co.uk'
+DEFAULT_FROM_EMAIL = 'okeyluvsu2004@yahoo.com'
+EMAIL_SUBJECT_PREFIX = '[Startup Organizer] '
+MANAGERS = (
+    ('Us', 'okeyluvsu2004@gmail.com'),
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
