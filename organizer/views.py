@@ -10,8 +10,61 @@ from .models import Tag, Startup, NewsLink
 from .forms import TagForm, StartupForm, NewsLinkForm
 
 # Create your views here.
-def tag_list(request):
-    return render(request, 'organizer/tag_list.html', {'tag_list': Tag.objects.all()})
+#def tag_list(request):
+#    return render(request, 'organizer/tag_list.html', {'tag_list': Tag.objects.all()})
+
+class TagList(View):
+    template_name = 'organizer/tag_list.html'
+
+    def get(self, request):
+        tags = Tag.objects.all()
+        context = {
+            'tag_list': tags,
+        }
+        return render(
+            request, self.template_name, context)
+
+class TagPageList(View):
+    paginate_by = 5
+    template_name = 'organizer/tag_list.html'
+
+    def get(self, request, page_number):
+        tags = Tag.objects.all()
+        paginator = Paginator(
+            tags, self.paginate_by)
+        try:
+            page = paginator.page(page_number)
+        except PageNotAnInteger:
+            page = paginator.page(1)
+        except EmptyPage:
+            page = paginator.page(
+                paginator.num_pages)
+        if page.has_previous():
+            prev_url = reverse(
+                'organizer_tag_page',
+                args=(
+                    page.previous_page_number(),
+                ))
+        else:
+            prev_url = None
+        if page.has_next():
+            next_url = reverse(
+                'organizer_tag_page',
+                args=(
+                    page.next_page_number(),
+                ))
+        else:
+            next_url = None
+        context = {
+            'is_paginated':
+                page.has_other_pages(),
+            'next_page_url': next_url,
+            'paginator': paginator,
+            'previous_page_url': prev_url,
+            'tag_list': page,
+        }
+        return render(
+            request, self.template_name, context)
 
 def tag_detail(request, slug):
     tag = get_object_or_404(Tag, slug__iexact=slug)
