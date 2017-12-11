@@ -36,9 +36,7 @@
           <li><a href="{% url 'organizer_startup_list' %}">Startups</a></li>
           <li><a href="{% url 'organizer_tag_list' %}">Tags</a></li>
           <li><a href="{% url 'contact' %}">Contact</a></li>
-          {% for page in flatpages %}
-            <li><a href="{{ page.get_absolute_url }}">{{ page.title }}</a></li>
-          {% endfor %}
+          <li><a href="{% url 'about_site' %}">About</a></li>
         </ul>
       </nav>
       {% if messages %}

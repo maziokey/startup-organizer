@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404, render, redirect
-from django.views.generic import View
-from .utils import ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
+from django.views.generic import CreateView, DeleteView, DetailView, UpdateView, View
+#from .utils import ObjectUpdateMixin, ObjectDeleteMixin, DetailView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 #from django.http.response import HttpResponse, Http404
 #from django.template import Context, loader
@@ -66,9 +66,14 @@ class TagPageList(View):
         return render(
             request, self.template_name, context)
 
+"""
 def tag_detail(request, slug):
     tag = get_object_or_404(Tag, slug__iexact=slug)
     return render(request, 'organizer/tag_detail.html', {'tag': tag})
+"""
+
+class TagDetail(DetailView):
+    model = Tag
 
 #def startup_list(request):
 #    return render(request, 'organizer/startup_list.html', {'startup_list': Startup.objects.all()})
@@ -114,10 +119,16 @@ class StartupList(View):
         return render(
             request, self.template_name, context)
 
+"""
 def startup_detail(request, slug):
     startup = get_object_or_404(Startup, slug__iexact=slug)
     return render(request, 'organizer/startup_detail.html', {'startup': startup})
+"""
 
+class StartupDetail(DetailView):
+    model = Startup
+
+"""
 def tag_create(request):
     if request.method == 'POST':
         form = TagForm(request.POST)
@@ -129,10 +140,10 @@ def tag_create(request):
     else: #request.method != 'POST'
         form = TagForm()
     return render(request, 'organizer/tag_form.html', {'form': form})
-
-class TagCreate(ObjectCreateMixin, View):
+"""
+class TagCreate(CreateView):
     form_class = TagForm
-    template_name = 'organizer/tag_form.html'
+    model = Tag
 
 """
     def get(self, request):
@@ -147,9 +158,9 @@ class TagCreate(ObjectCreateMixin, View):
             return render(request, self.template_name, {'form': bound_form})
 """
 
-class StartupCreate(ObjectCreateMixin, View):
+class StartupCreate(CreateView):
     form_class = StartupForm
-    template_name = 'organizer/startup_form.html'
+    model = Startup
 
 """
     def get(self, request):
@@ -164,9 +175,9 @@ class StartupCreate(ObjectCreateMixin, View):
             return render(request, self.template_name, {'form': bound_form})
 """
 
-class NewsLinkCreate(ObjectCreateMixin, View):
+class NewsLinkCreate(CreateView):
     form_class = NewsLinkForm
-    template_name = 'organizer/newslink_form.html'
+    model = NewsLink
 
 """
     def get(self, request):
@@ -200,8 +211,12 @@ class NewsLinkUpdate(View):
             context = {'form': bound_form, 'newslink': newslink, }
             return render(request, self.template_name, context)
 
-class NewsLinkDelete(View):
+class NewsLinkDelete(DeleteView):
+    model = NewsLink
 
+    def get_success_url(self):
+        return (self.object.startup.get_absolute_url())
+"""
     def get(self, request, pk):
         newslink = get_object_or_404(NewsLink, pk=pk)
         return render(request, 'organizer/''newslink_confirm_delete.html', {'newslink': newslink})
@@ -211,24 +226,24 @@ class NewsLinkDelete(View):
         startup = newslink.startup
         newslink.delete()
         return redirect(startup)
+"""
 
-
-class TagUpdate(ObjectUpdateMixin, View):
+class TagUpdate(UpdateView):
     form_class = TagForm
     model = Tag
     template_name = ('organizer/tag_form_update.html')
 
-class StartupUpdate(ObjectUpdateMixin, View):
+class StartupUpdate(UpdateView):
     form_class = StartupForm
     model = Startup
     template_name = ('organizer/startup_form_update.html')
 
-class StartupDelete(ObjectDeleteMixin, View):
+class StartupDelete(DeleteView):
     model = Startup
     success_url = reverse_lazy('organizer_startup_list')
-    template_name = ('organizer/startup_confirm_delete.html')
+    #template_name = ('organizer/startup_confirm_delete.html') no need for template name when using DeleteView GCBV
 
-class TagDelete(ObjectDeleteMixin, View):
+class TagDelete(DeleteView):
     model = Tag
     success_url = reverse_lazy('organizer_tag_list')
-    template_name = ('organizer/tag_confirm_delete.html')
+    #template_name = ('organizer/tag_confirm_delete.html') no need for template name when using DeleteView GCBV

@@ -1,15 +1,16 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.views.generic import View
+from django.views.generic import View, CreateView, ListView
 
 from .models import Post
 from .forms import PostForm
 
 # Create your views here.
 class PostList(View):
-
+    model = Post
+"""
     def get(self, request):
         return render(request, 'blog/post_list.html', {'post_list': Post.objects.all()})
-
+"""
 """
 def post_list(request):
     return render(request, 'blog/post_list.html', {'post_list': Post.objects.all()})
@@ -22,8 +23,8 @@ def post_detail(request, year, month, slug):
 
 class PostCreate(View):
     form_class = PostForm
-    template_name = 'blog/post_form.html'
-
+    model = Post
+"""
     def get(self, request):
         return render(request, self.template_name, {'form': self.form_class()})
 
@@ -34,6 +35,7 @@ class PostCreate(View):
             return redirect(new_post)
         else:
             return render(request, self.template_name, {'form': bound_form})
+"""
 
 class PostUpdate(View):
     form_class = PostForm
