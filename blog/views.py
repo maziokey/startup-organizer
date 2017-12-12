@@ -1,12 +1,19 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.views.generic import View, CreateView, ListView
+from django.views.generic import View, CreateView, ListView, YearArchiveView, MonthArchiveView, ArchiveIndexView
 
 from .models import Post
 from .forms import PostForm
 
 # Create your views here.
-class PostList(View):
+class PostList(ArchiveIndexView):
+    allow_empty = True
+    allow_future = True
+    context_object_name = 'post_list'
+    date_field = 'pub_date'
+    make_object_list = True
     model = Post
+    paginate_by = 5
+    template_name = 'blog/post_list.html'
 """
     def get(self, request):
         return render(request, 'blog/post_list.html', {'post_list': Post.objects.all()})
@@ -86,3 +93,13 @@ class PostDelete(View):
         post = get_object_or_404(Post, pub_date__year=year, pub_date__month=month, slug__iexact=slug)
         post.delete()
         return redirect('blog_post_list')
+
+class PostArchiveYear(YearArchiveView):
+    model = Post
+    date_field = 'pub_date'
+    make_object_list = True
+
+class PostArchiveMonth(MonthArchiveView):
+    model = Post
+    date_field = 'pub_date'
+    month_format = '%m'

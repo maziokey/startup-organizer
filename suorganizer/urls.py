@@ -19,7 +19,7 @@ from django.contrib import admin
 from organizer.urls import newslink as newslink_urls, startup as startup_urls, tag as tag_urls
 from blog import urls as blog_urls
 from contact import urls as contact_urls
-from .views import redirect_root
+#from .views import redirect_root
 from django.views.generic import RedirectView, TemplateView
 
 urlpatterns = [
