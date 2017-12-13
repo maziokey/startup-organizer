@@ -1,6 +1,8 @@
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404, render, redirect
-from django.views.generic import CreateView, DeleteView, DetailView, UpdateView, View
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
+from core.utils import UpdateView
+from .utils import PageLinksMixin
 #from .utils import ObjectUpdateMixin, ObjectDeleteMixin, DetailView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 #from django.http.response import HttpResponse, Http404
@@ -13,7 +15,10 @@ from .forms import TagForm, StartupForm, NewsLinkForm
 #def tag_list(request):
 #    return render(request, 'organizer/tag_list.html', {'tag_list': Tag.objects.all()})
 
-class TagList(View):
+class TagList(PageLinksMixin, ListView):
+    model = Tag
+    paginate_by = 5
+"""
     template_name = 'organizer/tag_list.html'
 
     def get(self, request):
@@ -23,7 +28,8 @@ class TagList(View):
         }
         return render(
             request, self.template_name, context)
-
+"""
+"""
 class TagPageList(View):
     paginate_by = 5
     template_name = 'organizer/tag_list.html'
@@ -65,7 +71,7 @@ class TagPageList(View):
         }
         return render(
             request, self.template_name, context)
-
+"""
 """
 def tag_detail(request, slug):
     tag = get_object_or_404(Tag, slug__iexact=slug)
@@ -78,7 +84,10 @@ class TagDetail(DetailView):
 #def startup_list(request):
 #    return render(request, 'organizer/startup_list.html', {'startup_list': Startup.objects.all()})
 
-class StartupList(View):
+class StartupList(PageLinksMixin, ListView):
+    model = Startup
+    paginate_by = 5
+"""
     page_kwarg = 'page'
     paginate_by = 5 # 5 items per page
     template_name = 'organizer/startup_list.html'
@@ -118,7 +127,7 @@ class StartupList(View):
         }
         return render(
             request, self.template_name, context)
-
+"""
 """
 def startup_detail(request, slug):
     startup = get_object_or_404(Startup, slug__iexact=slug)
@@ -192,8 +201,11 @@ class NewsLinkCreate(CreateView):
             return render(request, self.template_name, {'form': bound_form})
 """
 
-class NewsLinkUpdate(View):
+class NewsLinkUpdate(UpdateView):
     form_class = NewsLinkForm
+    model = NewsLink
+    #template_name_suffix = '_form_update'
+"""
     template_name = ('organizer/newslink_form_update.html')
 
     def get(self, request, pk):
@@ -210,7 +222,7 @@ class NewsLinkUpdate(View):
         else:
             context = {'form': bound_form, 'newslink': newslink, }
             return render(request, self.template_name, context)
-
+"""
 class NewsLinkDelete(DeleteView):
     model = NewsLink
 
@@ -231,12 +243,14 @@ class NewsLinkDelete(DeleteView):
 class TagUpdate(UpdateView):
     form_class = TagForm
     model = Tag
-    template_name = ('organizer/tag_form_update.html')
+    #template_name_suffix = '_form_update'
+    #template_name = ('organizer/tag_form_update.html')
 
 class StartupUpdate(UpdateView):
     form_class = StartupForm
     model = Startup
-    template_name = ('organizer/startup_form_update.html')
+    #template_name_suffix = '_form_update'
+    #template_name = ('organizer/startup_form_update.html')
 
 class StartupDelete(DeleteView):
     model = Startup
