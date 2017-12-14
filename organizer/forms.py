@@ -20,7 +20,7 @@ class TagForm(SlugCleanMixin, forms.ModelForm):
     def clean_name(self):
         return self.cleaned_data['name'].lower()
 
-class NewsLinkForm(forms.ModelForm):
+class NewsLinkForm(SlugCleanMixin, forms.ModelForm):
     class Meta:
         model = NewsLink
         fields = '__all__'

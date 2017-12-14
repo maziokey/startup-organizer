@@ -7,7 +7,7 @@
 {% block content %}
   <div>
     <div>
-      <form action="{% url 'organizer_newslink_create' %}" method="post">
+      <form action="{{ startup.get_newslink_create_url }}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Link Article</button>

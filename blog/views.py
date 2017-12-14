@@ -1,8 +1,10 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.views.generic import View, CreateView, ListView, YearArchiveView, MonthArchiveView, ArchiveIndexView
+from django.views.generic import View, CreateView, ListView, YearArchiveView, MonthArchiveView, ArchiveIndexView, DateDetailView, DeleteView
 
 from .models import Post
 from .forms import PostForm
+from .utils import DateObjectMixin
+from core.utils import UpdateView
 
 # Create your views here.
 class PostList(ArchiveIndexView):
@@ -24,9 +26,15 @@ def post_list(request):
 
 
 """
+"""
 def post_detail(request, year, month, slug):
     post = get_object_or_404(Post, pub_date__year=year, pub_date__month=month, slug=slug)
     return render(request, 'blog/post_detail.html', {'post': post})
+"""
+class PostDetail(DateObjectMixin, DetailView):
+    allow_future = True
+    date_field = 'pub_date'
+    model = Post
 
 class PostCreate(View):
     form_class = PostForm
@@ -44,9 +52,12 @@ class PostCreate(View):
             return render(request, self.template_name, {'form': bound_form})
 """
 
-class PostUpdate(View):
+class PostUpdate(DateObjectMixin, UpdateView):
+    allow_future = True
+    date_field = 'pub_date'
     form_class = PostForm
     model = Post
+"""
     template_name = 'blog/post_form_update.html'
 
     def get_object(self, year, month, slug):
@@ -82,9 +93,14 @@ class PostUpdate(View):
                 request,
                 self.template_name,
                 context)
+"""
 
-class PostDelete(View):
-
+class PostDelete(DateObjectMixin, DeleteView):
+    allow_future = True
+    date_field = 'pub_date'
+    model = Post
+    success_url = reverse_lazy('blog_post_list')
+"""
     def get(self, request, year, month, slug):
         post = get_object_or_404(Post, pub_date__year=year, pub_date__month=month, slug__iexact=slug)
         return render(request, 'blog/post_confirm_delete.html', {'post': post})
@@ -93,6 +109,7 @@ class PostDelete(View):
         post = get_object_or_404(Post, pub_date__year=year, pub_date__month=month, slug__iexact=slug)
         post.delete()
         return redirect('blog_post_list')
+"""
 
 class PostArchiveYear(YearArchiveView):
     model = Post

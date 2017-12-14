@@ -5,6 +5,21 @@ from django.core.exceptions import \
 from django.db.models import Model
 from django.views.generic import View
 
+from .models import Startup, NewsLink
+
+class NewsLinkGetObjectMixin():
+
+    def get_object(self, queryset=None):
+        startup_slug = self.kwargs.get(
+            self.startup_slug_url_kwarg)
+        newslink_slug = self.kwargs.get(
+            self.slug_url_kwarg)
+        return get_object_or_404(
+            NewsLink,
+            slug__iexact=newslink_slug,
+            startup__slug__iexact=startup_slug)
+
+
 """ HAS BEEN TRASFORMED TO CreateView
 class ObjectCreateMixin:
     form_class = None
@@ -153,3 +168,19 @@ class PageLinksMixin:
         if page.number < last_page:
             return self._page_urls(last_page)
         return None
+
+class StartupContextMixin():
+    startup_slug_url_kwarg = 'startup_slug'
+    startup_context_object_name = 'startup'
+
+    def get_context_data(self, **kwargs):
+        startup_slug = self.kwargs.get(
+            self.startup_slug_url_kwarg)
+        startup = get_object_or_404(
+            Startup, slug__iexact=startup_slug)
+        context = {
+            self.startup_context_object_name:
+                startup,
+        }
+        context.update(kwargs)
+        return super().get_context_data(**context)

@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
 from core.utils import UpdateView
-from .utils import PageLinksMixin
+from .utils import PageLinksMixin, StartupContextMixin, NewsLinkGetObjectMixin
 #from .utils import ObjectUpdateMixin, ObjectDeleteMixin, DetailView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 #from django.http.response import HttpResponse, Http404
@@ -184,7 +184,7 @@ class StartupCreate(CreateView):
             return render(request, self.template_name, {'form': bound_form})
 """
 
-class NewsLinkCreate(CreateView):
+class NewsLinkCreate(NewsLinkGetObjectMixin, StartupContextMixin, CreateView):
     form_class = NewsLinkForm
     model = NewsLink
 
@@ -201,9 +201,10 @@ class NewsLinkCreate(CreateView):
             return render(request, self.template_name, {'form': bound_form})
 """
 
-class NewsLinkUpdate(UpdateView):
+class NewsLinkUpdate(NewsLinkGetObjectMixin, StartupContextMixin, UpdateView):
     form_class = NewsLinkForm
     model = NewsLink
+    slug_url_kwarg = 'newslink_slug'
     #template_name_suffix = '_form_update'
 """
     template_name = ('organizer/newslink_form_update.html')
@@ -223,8 +224,9 @@ class NewsLinkUpdate(UpdateView):
             context = {'form': bound_form, 'newslink': newslink, }
             return render(request, self.template_name, context)
 """
-class NewsLinkDelete(DeleteView):
+class NewsLinkDelete(StartupContextMixin, DeleteView):
     model = NewsLink
+    slug_url_kwarg = 'newslink_slug'
 
     def get_success_url(self):
         return (self.object.startup.get_absolute_url())
