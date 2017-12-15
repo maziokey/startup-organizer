@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.widgets import HiddenInput
 from django.core.exceptions import ValidationError
 
 from .models import Tag, NewsLink, Startup
@@ -24,6 +25,7 @@ class NewsLinkForm(SlugCleanMixin, forms.ModelForm):
     class Meta:
         model = NewsLink
         fields = '__all__'
+        widgets = {'startup': HiddenInput()}
 
 class StartupForm(SlugCleanMixin, forms.ModelForm):
     class Meta:
