@@ -19,6 +19,7 @@ from django.contrib import admin
 from organizer.urls import startup as startup_urls, tag as tag_urls
 from blog import urls as blog_urls
 from contact import urls as contact_urls
+from user import urls as user_urls
 #from .views import redirect_root
 from django.views.generic import RedirectView, TemplateView
 
@@ -32,4 +33,5 @@ urlpatterns = [
     #url(r'^newslink/', include(newslink_urls)),
     url(r'^startup/', include(startup_urls)),
     url(r'^tag/', include(tag_urls)),
+    url(r'^user/', include(user_urls, app_name='user', namespace='dj-auth')),
 ]

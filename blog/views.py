@@ -1,5 +1,6 @@
+from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404, render, redirect
-from django.views.generic import View, CreateView, ListView, YearArchiveView, MonthArchiveView, ArchiveIndexView, DateDetailView, DeleteView
+from django.views.generic import View, CreateView, ListView, YearArchiveView, MonthArchiveView, ArchiveIndexView, DateDetailView, DeleteView, DetailView
 
 from .models import Post
 from .forms import PostForm
