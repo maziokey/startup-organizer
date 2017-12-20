@@ -1,4 +1,4 @@
-from djano.conf.urls import url
+from django.conf.urls import url
 from django.contrib.auth import \
     views as auth_views
 from django.contrib.auth.forms import \
