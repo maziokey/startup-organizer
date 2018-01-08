@@ -7,6 +7,9 @@ from .forms import PostForm
 from .utils import DateObjectMixin
 from core.utils import UpdateView
 
+from user.decorators import \
+    require_authenticated_permission
+
 # Create your views here.
 class PostList(ArchiveIndexView):
     allow_empty = True
@@ -37,6 +40,7 @@ class PostDetail(DateObjectMixin, DetailView):
     date_field = 'pub_date'
     model = Post
 
+@require_authenticated_permission('blog.add_post')
 class PostCreate(View):
     form_class = PostForm
     model = Post
@@ -53,6 +57,7 @@ class PostCreate(View):
             return render(request, self.template_name, {'form': bound_form})
 """
 
+@require_authenticated_permission('blog.change_post')
 class PostUpdate(DateObjectMixin, UpdateView):
     allow_future = True
     date_field = 'pub_date'
@@ -96,6 +101,7 @@ class PostUpdate(DateObjectMixin, UpdateView):
                 context)
 """
 
+@require_authenticated_permission('blog.delete_post')
 class PostDelete(DateObjectMixin, DeleteView):
     allow_future = True
     date_field = 'pub_date'

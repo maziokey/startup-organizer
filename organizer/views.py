@@ -7,6 +7,12 @@ from .utils import PageLinksMixin, StartupContextMixin, NewsLinkGetObjectMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 #from django.http.response import HttpResponse, Http404
 #from django.template import Context, loader
+from django.contrib.auth.decorators import permission_required, login_required
+
+from django.utils.decorators import \
+    method_decorator
+
+from user.decorators import custom_login_required, require_authenticated_permission, class_login_required
 
 from .models import Tag, Startup, NewsLink
 from .forms import TagForm, StartupForm, NewsLinkForm
@@ -150,10 +156,15 @@ def tag_create(request):
         form = TagForm()
     return render(request, 'organizer/tag_form.html', {'form': form})
 """
+
+@require_authenticated_permission('organizer.add_tag')
 class TagCreate(CreateView):
     form_class = TagForm
     model = Tag
-
+"""
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+"""
 """
     def get(self, request):
         return render(request, self.template_name, {'form': self.form_class()})
@@ -167,6 +178,7 @@ class TagCreate(CreateView):
             return render(request, self.template_name, {'form': bound_form})
 """
 
+@require_authenticated_permission('organizer.add_startup')
 class StartupCreate(CreateView):
     form_class = StartupForm
     model = Startup
@@ -184,6 +196,7 @@ class StartupCreate(CreateView):
             return render(request, self.template_name, {'form': bound_form})
 """
 
+@require_authenticated_permission('organizer.add_newslink')
 class NewsLinkCreate(NewsLinkGetObjectMixin, StartupContextMixin, CreateView):
     form_class = NewsLinkForm
     model = NewsLink
@@ -208,6 +221,7 @@ class NewsLinkCreate(NewsLinkGetObjectMixin, StartupContextMixin, CreateView):
             return render(request, self.template_name, {'form': bound_form})
 """
 
+@require_authenticated_permission('organizer.change_newslink')
 class NewsLinkUpdate(NewsLinkGetObjectMixin, StartupContextMixin, UpdateView):
     form_class = NewsLinkForm
     model = NewsLink
@@ -231,6 +245,8 @@ class NewsLinkUpdate(NewsLinkGetObjectMixin, StartupContextMixin, UpdateView):
             context = {'form': bound_form, 'newslink': newslink, }
             return render(request, self.template_name, context)
 """
+
+@require_authenticated_permission('organizer.delete_newslink')
 class NewsLinkDelete(StartupContextMixin, DeleteView):
     model = NewsLink
     slug_url_kwarg = 'newslink_slug'
@@ -249,23 +265,32 @@ class NewsLinkDelete(StartupContextMixin, DeleteView):
         return redirect(startup)
 """
 
+@require_authenticated_permission('organizer.change_tag')
 class TagUpdate(UpdateView):
     form_class = TagForm
     model = Tag
+"""
+    @custom_login_required
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
     #template_name_suffix = '_form_update'
     #template_name = ('organizer/tag_form_update.html')
+"""
 
+@require_authenticated_permission('organizer.change_startup')
 class StartupUpdate(UpdateView):
     form_class = StartupForm
     model = Startup
     #template_name_suffix = '_form_update'
     #template_name = ('organizer/startup_form_update.html')
 
+@require_authenticated_permission('organizer.delete_startup')
 class StartupDelete(DeleteView):
     model = Startup
     success_url = reverse_lazy('organizer_startup_list')
     #template_name = ('organizer/startup_confirm_delete.html') no need for template name when using DeleteView GCBV
 
+@require_authenticated_permission('organizer.delete_tag')
 class TagDelete(DeleteView):
     model = Tag
     success_url = reverse_lazy('organizer_tag_list')
