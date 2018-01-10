@@ -3,6 +3,10 @@ from django.views.generic.dates import (
     DateMixin, MonthMixin as BaseMonthMixin,
     YearMixin as BaseYearMixin, _date_from_string)
 
+class AllowFuturePermissionMixin():
+
+    def get_allow_future(self):
+        return self.request.user.has_perm('blog.view_future_post')
 
 class MonthMixin(BaseMonthMixin):
     month_format = '%m'
@@ -38,6 +42,7 @@ class YearMixin(BaseYearMixin):
 
 
 class DateObjectMixin(
+        AllowFuturePermissionMixin,
         YearMixin, MonthMixin, DateMixin):
 
     def get_object(self, queryset=None):

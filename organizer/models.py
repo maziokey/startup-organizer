@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 from django.core.urlresolvers import reverse
 
@@ -17,6 +19,9 @@ class Tag(models.Model):
 
     def get_delete_url(self):
         return reverse('organizer_tag_delete', kwargs={'slug': self.slug})
+
+    def published_posts(self):
+        return self.blog_posts.filter(pub_date__lt=date.today())
 
     class Meta:
         ordering = ['name']

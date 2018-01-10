@@ -8,10 +8,16 @@
 <div class="row">
   <div class="offset-by-two eight columns">
     <h2>{{ tag.name|title }}</h2>
+  {% if perms.organizer.change_tag or perms.organizer.delete_tag %}
     <ul class="inline">
+    {% if perms.organizer.change_tag %}
       <li><a href="{{ tag.get_update_url }}" class="button">Edit Tag</a></li>
+    {% endif %}
+    {% if perms.organizer.delete_tag %}
       <li><a href="{{ tag.get_delete_url }}" class="button">Delete Tag</a></li>
+    {% endif %}
     </ul>
+  {% endif %}
   </div>
 </div>
 
@@ -33,23 +39,50 @@
 </div>
 {% endif %}
 
-{% if tag.blog_posts.all %}
-<div class="row">
-  <section class="meta offset-by-two one-third column">
-    <h3>Blog Posts{{ tag.blog_posts.count|pluralize }}</h3>
-    <ul>
-      {% for post in tag.blog_posts.all %}
-        <li><a href="{{ post.get_absolute_url }}">{{ post.title|title }}</a></li>
-      {% endfor %}
-    </ul>
-  </section>
-</div>
-{% endif %}
+{% if perms.blog.view_future_post %}
 
-{% if not tag.startup_set.all and not tag.blog_posts.all %}
-<div class="row">
-  <p>This tag is not related to any content.</p>
-</div>
+    {% if tag.blog_posts.all %}
+    <div class="row">
+      <section class="meta offset-by-two one-third column">
+        <h3>Blog Posts{{ tag.blog_posts.count|pluralize }}</h3>
+        <ul>
+          {% for post in tag.blog_posts.all %}
+            <li><a href="{{ post.get_absolute_url }}">{{ post.title|title }}</a></li>
+          {% endfor %}
+        </ul>
+      </section>
+    </div>
+    {% endif %}
+
+    {% if not tag.startup_set.all and not tag.blog_posts.all %}
+    <div class="row">
+      <p>This tag is not related to any content.</p>
+    </div>
+    {% endif %}
+
+{% else %}
+
+    {% if tag.published_posts|length > 0 %}
+      <div class="row">
+        <section>
+          <h3>Blog Post{{ tag.published_posts|pluralize }}</h3>
+          <ul>
+            {% for post in tag.published_posts %}
+              <li><a href="{{ post.get_absolute_url }}">
+                {{ post.title|title }}
+              </a></li>
+            {% endfor %}
+          </ul>
+        </section>
+      </div>
+    {% endif %}
+
+    {% if not tag.startup_set.all and not tag.published_posts %}
+      <div class="row">
+        <p>This tag is not related to any content.</p>
+      </div>
+    {% endif %}
+
 {% endif %}
 
 {% endblock %}
