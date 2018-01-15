@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django import forms
 from django.core.mail import BadHeaderError, mail_managers
 
@@ -28,7 +29,7 @@ class ContactForm(forms.Form):
         except BadHeaderError:
             self.add_error(
                 None,
-                validationError(
+                ValidationError(
                     'Could Not Send Email. \n'
                     'Extra Headers not allowed '
                     'in email body.',

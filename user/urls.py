@@ -4,8 +4,8 @@ from django.contrib.auth import \
 from django.contrib.auth.forms import \
     AuthenticationForm
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import RedirectView
-from .views import DisableAccount
+from django.views.generic import RedirectView, TemplateView
+from .views import DisableAccount, ActivateAccount, CreateAccount
 
 password_urls = [
     url(r'^change/$', auth_views.password_change, {'template_name': 'user/password_change_form.html', 'post_change_redirect': reverse_lazy('dj-auth:pw_change_done')}, name='pw_change'),
@@ -18,6 +18,9 @@ password_urls = [
 
 urlpatterns = [
     url(r'^$', RedirectView.as_view(pattern_name='dj-auth:login', permanent=False)),
+    url(r'^activate/'r'(?P<uidb64>[0-9A-Za-z_\-]+)/'r'(?P<token>[0-9A-Za-z]{1,13}'r'-[0-9A-Za-z]{1,20})/$', ActivateAccount.as_view(), name='activate'),
+    url(r'^create/$', CreateAccount.as_view(), name='create'),
+    url(r'^create/done/$', TemplateView.as_view(template_name=('user/user_create_done.html')), name='create_done'),
     url(r'^disable/$', DisableAccount.as_view(), name='disable'),
     url(r'^login/$', auth_views.login, {'template_name': 'user/login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'user/logged_out.html', 'extra_context': {'form': AuthenticationForm}}, name='logout'),
