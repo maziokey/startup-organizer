@@ -4,7 +4,7 @@ from django.views.generic import View, CreateView, ListView, YearArchiveView, Mo
 
 from .models import Post
 from .forms import PostForm
-from .utils import DateObjectMixin, AllowFuturePermissionMixin
+from .utils import DateObjectMixin, AllowFuturePermissionMixin, PostFormValidMixin
 from core.utils import UpdateView
 
 from user.decorators import \
@@ -39,7 +39,7 @@ class PostDetail(DateObjectMixin, DetailView):
     model = Post
 
 @require_authenticated_permission('blog.add_post')
-class PostCreate(View):
+class PostCreate(PostFormValidMixin, CreateView):
     form_class = PostForm
     model = Post
 """
@@ -56,7 +56,7 @@ class PostCreate(View):
 """
 
 @require_authenticated_permission('blog.change_post')
-class PostUpdate(DateObjectMixin, UpdateView):
+class PostUpdate(PostFormValidMixin, DateObjectMixin, UpdateView):
     date_field = 'pub_date'
     form_class = PostForm
     model = Post

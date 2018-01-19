@@ -1,0 +1,60 @@
+{% extends parent_template|default:"user/base_user.html" %}
+
+{% block title %}
+{{ block.super }} -
+{{ profile.user.get_username }}'s Profile
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    {% if user.pk == profile.user.pk %}
+      <div class="offset-by-two five columns">
+    {% else %}
+      <div class="offset-by-two eight columns">
+    {% endif%}
+
+    <h2>About {{ profile.user.get_username }}</h2>
+    {{ profile.about|default:"No Profile"|linebreaks }}
+
+    {% if perms.blog.view_future_post and profile.user.blog_posts.all %}
+      <section>
+        <h3>Blog Post{{ profile.user.blog_posts.count|pluralize }}</h3>
+        <ul>
+          {% for post in profile.user.blog_posts.all %}
+            <li><a href="{{ post.get_absolute_url }}">
+              {{ post.title|title }}
+            </a></li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% elif profile.user.published_posts|length > 0 %}
+      <section>
+        <h3>Blog Post{{ profile.user.published_posts|pluralize }}</h3>
+        <ul>
+          {% for post in profile.user.published_posts %}
+            <li><a href="{{ post.get_absolute_url }}">
+              {{ post.title|title }}
+            </a></li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+      </div>
+      </div><!-- columns -->
+
+    {% if user.pk == profile.user.pk %}
+      <div class="three columns">
+        <ul class="task-list">
+          <li><a href="{{ profile.get_update_url }}">
+            Edit Your Profile</a></li>
+          <li><a href="{% url 'dj-auth:pw_change' %}">
+            Change Password</a></li>
+          <li><a href="{% url 'dj-auth:disable' %}">
+            Disable Account</a></li>
+        </ul>
+      </div>
+    {% endif%}
+
+  </div><!-- row -->
+{% endblock %}

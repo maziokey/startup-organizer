@@ -4,6 +4,7 @@ from logging import CRITICAL, ERROR
 from smtplib import SMTPException
 
 from django.conf import settings
+from django.contrib.auth import get_user
 from django.template.loader import \
     render_to_string
 from django.contrib.auth.tokens import \
@@ -141,3 +142,9 @@ class MailContextViewMixin:
             'request': request,
             'subject_template_name': self.subject_template_name,
         }
+
+class ProfileGetObjectMixin:
+
+    def get_object(self, queryset=None):
+        current_user = get_user(self.request)
+        return current_user.profile

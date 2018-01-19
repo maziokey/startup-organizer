@@ -1,28 +1,36 @@
-from django.shortcuts import render
 from django.conf import settings
-from django.contrib.auth import get_user, get_user_model, logout
+from django.contrib.auth import (
+    get_user, get_user_model, logout)
 from django.contrib.auth.decorators import \
     login_required
+from django.contrib.auth.tokens import \
+    default_token_generator as token_generator
+from django.contrib.messages import error, success
+from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import redirect
 from django.template.response import \
     TemplateResponse
 from django.utils.decorators import \
     method_decorator
-from django.views.decorators.csrf import \
-    csrf_protect
-from django.views.generic import View
-from django.core.urlresolvers import reverse_lazy
-from django.views.decorators.debug import \
-    sensitive_post_parameters
-from django.views.decorators.cache import \
-    never_cache
 from django.utils.encoding import force_text
 from django.utils.http import \
     urlsafe_base64_decode
-from django.contrib.messages import error, success
+from django.views.decorators.cache import \
+    never_cache
+from django.views.decorators.csrf import \
+    csrf_protect
+from django.views.decorators.debug import \
+    sensitive_post_parameters
+from django.views.generic import DetailView, View
 
-from .forms import UserCreationForm, ResendActivationEmailForm
-from .utils import MailContextViewMixin
+from core.utils import UpdateView
+
+from .decorators import class_login_required
+from .forms import (
+    ResendActivationEmailForm, UserCreationForm)
+from .models import Profile
+from .utils import (
+    MailContextViewMixin, ProfileGetObjectMixin)
 
 # Create your views here.
 class ActivateAccount(View):
@@ -94,6 +102,18 @@ class DisableAccount(View):
         user.save()
         logout(request)
         return redirect(self.success_url)
+
+@class_login_required
+class ProfileDetail(ProfileGetObjectMixin, DetailView):
+    model = Profile
+
+class PublicProfileDetail(DetailView):
+    model = Profile
+
+@class_login_required
+class ProfileUpdate(ProfileGetObjectMixin, UpdateView):
+    fields = ('about',)
+    model = Profile
 
 class ResendActivationEmail(MailContextViewMixin, View):
     form_class = ResendActivationEmailForm

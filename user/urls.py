@@ -5,7 +5,7 @@ from django.contrib.auth.forms import \
     AuthenticationForm
 from django.core.urlresolvers import reverse_lazy
 from django.views.generic import RedirectView, TemplateView
-from .views import DisableAccount, ActivateAccount, CreateAccount, ResendActivationEmail
+from .views import DisableAccount, ActivateAccount, CreateAccount, ResendActivationEmail, ProfileDetail, ProfileUpdate, PublicProfileDetail
 
 password_urls = [
     url(r'^$', RedirectView.as_view(pattern_name='dj-auth:pw_reset_start', permanent=False)),
@@ -28,4 +28,7 @@ urlpatterns = [
     url(r'^login/$', auth_views.login, {'template_name': 'user/login.html'}, name='login'),
     url(r'^logout/$', auth_views.logout, {'template_name': 'user/logged_out.html', 'extra_context': {'form': AuthenticationForm}}, name='logout'),
     url(r'^password/', include(password_urls)),
+    url(r'^profile/$', ProfileDetail.as_view(), name='profile'),
+    url(r'^profile/edit/$', ProfileUpdate.as_view(), name='profile_update'),
+    url(r'^(?P<slug>[\w\-]+)/$', PublicProfileDetail.as_view(), name='public_profile'),
 ]

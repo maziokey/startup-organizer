@@ -138,6 +138,11 @@ LOGGING = {
     },
 }
 
+# User
+# https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#substituting-a-custom-user-model
+
+AUTH_USER_MODEL = 'user.User'
+
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 

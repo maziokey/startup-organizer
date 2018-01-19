@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.generic import RedirectView, TemplateView
 
 from organizer.urls import startup as startup_urls, tag as tag_urls
 from blog import urls as blog_urls
 from contact import urls as contact_urls
 from user import urls as user_urls
 #from .views import redirect_root
-from django.views.generic import RedirectView, TemplateView
 
 urlpatterns = [
     url(r'^$', RedirectView.as_view(pattern_name='blog_post_list', permanent=False)),
