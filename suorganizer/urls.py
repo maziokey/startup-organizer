@@ -23,6 +23,9 @@ from contact import urls as contact_urls
 from user import urls as user_urls
 #from .views import redirect_root
 
+admin.site.site_header = 'Startup Organizer Admin'
+admin.site.site_title = 'Startup Organizer Site Admin'
+
 urlpatterns = [
     url(r'^$', RedirectView.as_view(pattern_name='blog_post_list', permanent=False)),
     url(r'^about/$', TemplateView.as_view(template_name='site/about.html'), name='about_site'),

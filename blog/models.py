@@ -36,3 +36,8 @@ class Post(models.Model):
         ordering = ['-pub_date', 'title']
         get_latest_by = 'pub_date'
         permissions = (("view_future_post", "Can view unpublished Post"), )
+"""
+    @property
+    def tag_count(self):
+        return self.tags.count()
+"""
