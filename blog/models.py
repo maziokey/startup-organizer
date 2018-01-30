@@ -1,9 +1,20 @@
+from datetime import date
 from django.conf import settings
 from django.db import models
 from organizer.models import Startup, Tag
 from django.core.urlresolvers import reverse
 
 # Create your models here.
+class PostQueryset(models.QuerySet):
+    def published(self):
+        return self.filter(pub_date__lte=date.today())
+
+class BasePostManager(models.Manager):
+    def get_by_natural_key(self, pub_date, slug):
+        return self.get(pub_date=pub_date, slug=slug)
+
+PostManager = BasePostManager.from_queryset(PostQueryset)
+
 class Post(models.Model):
     title = models.CharField(max_length=63)
     slug = models.SlugField(max_length=63, help_text='A label for URL config', unique_for_month='pub_date')
@@ -12,6 +23,8 @@ class Post(models.Model):
     pub_date = models.DateField('date published', auto_now_add=True)
     tags = models.ManyToManyField(Tag, blank=True, related_name='blog_posts')
     startups = models.ManyToManyField(Startup, blank=True, related_name='blog_posts')
+
+    objects = PostManager()
 
     def __str__(self):
         return "{} on {}".format(self.title, self.pub_date.strftime('%Y-%m-%d'))
@@ -30,6 +43,14 @@ class Post(models.Model):
 
     def get_archive_month_url(self):
         return reverse('blog_post_archive_month', kwargs={'year': self.pub_date.year, 'month': self.pub_date.month})
+
+    def natural_key(self):
+        return (self.pub_date, self.slug)
+    natural_key.dependencies = [
+        'organizer.startup',
+        'organizer.tag',
+        'user.user',
+    ]
 
     class Meta:
         verbose_name = 'blog post'

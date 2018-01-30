@@ -1,0 +1,126 @@
+[
+{
+  "model": "organizer.startup",
+  "pk": 1,
+  "fields": {
+    "name": "Arachnobots",
+    "slug": "arachnobots",
+    "description": "Remote-controlled internet-enabled Spider Robots.",
+    "founded_date": "2014-10-31",
+    "contact": "contact@arachnobots.com",
+    "website": "http://frightenyourroommate.com/",
+    "tags": [
+      1,
+      8
+    ]
+  }
+},
+{
+  "model": "organizer.startup",
+  "pk": 2,
+  "fields": {
+    "name": "Boundless Software",
+    "slug": "boundless-software",
+    "description": "The sky was the limit.",
+    "founded_date": "2013-05-15",
+    "contact": "hello@boundless.com",
+    "website": "http://boundless.com/",
+    "tags": [
+      2
+    ]
+  }
+},
+{
+  "model": "organizer.startup",
+  "pk": 3,
+  "fields": {
+    "name": "Game Congress",
+    "slug": "game-congress",
+    "description": "By gamers, for gamers, of gamers.",
+    "founded_date": "2012-07-04",
+    "contact": "vote@gamecongress.com",
+    "website": "http://gamecongress.com/",
+    "tags": [
+      14
+    ]
+  }
+},
+{
+  "model": "organizer.startup",
+  "pk": 4,
+  "fields": {
+    "name": "JamBon Software",
+    "slug": "jambon-software",
+    "description": "JamBon Software is a consulting company that specializes in web and mobile products. They can carry out full end-to-end development of new products, or review and advise on existing projects. They also offer hands-on training in Django.",
+    "founded_date": "2013-01-18",
+    "contact": "django@jambonsw.com",
+    "website": "http://jambonsw.com/",
+    "tags": [
+      3
+    ]
+  }
+},
+{
+  "model": "organizer.startup",
+  "pk": 5,
+  "fields": {
+    "name": "Lightning Rod Consulting",
+    "slug": "lightning-rod-consulting",
+    "description": "Channel the storm. Trouble shoot the cloud.",
+    "founded_date": "2014-04-01",
+    "contact": "help@lightningrod.com",
+    "website": "http://lightningrod.com/",
+    "tags": [
+      2,
+      5,
+      7
+    ]
+  }
+},
+{
+  "model": "organizer.startup",
+  "pk": 6,
+  "fields": {
+    "name": "Monkey Software",
+    "slug": "monkey-software",
+    "description": "1000 code monkeys making software.",
+    "founded_date": "2014-12-10",
+    "contact": "shakespeare@monkeysw.com",
+    "website": "http://monkeysw.com/",
+    "tags": [
+      14
+    ]
+  }
+},
+{
+  "model": "organizer.startup",
+  "pk": 7,
+  "fields": {
+    "name": "Simple Robots",
+    "slug": "simple-robots",
+    "description": "Your resource to understanding computer, robots, and technology.",
+    "founded_date": "2010-01-02",
+    "contact": "yoshimi@simplerobots.com",
+    "website": "http://simplerobots.com/",
+    "tags": [
+      1,
+      11
+    ]
+  }
+},
+{
+  "model": "organizer.startup",
+  "pk": 8,
+  "fields": {
+    "name": "Thingies",
+    "slug": "thingies",
+    "description": "A marketplace for arduino, raspberry pi, and other homemade stuff.",
+    "founded_date": "2015-04-07",
+    "contact": "help@lightningrod.com",
+    "website": "http://buythingies.com/",
+    "tags": [
+      11
+    ]
+  }
+}
+]

@@ -42,6 +42,7 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('username', 'email',)
     ordering = ('email',)
     list_display_links = ('get_name', 'email')
+    list_select_related = ('profile',)
 
     # form view
 

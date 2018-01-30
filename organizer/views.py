@@ -85,7 +85,8 @@ def tag_detail(request, slug):
 """
 
 class TagDetail(DetailView):
-    model = Tag
+    #model = Tag
+    queryset = (Tag.objects.prefetch_related('startup_set'))
 
 #def startup_list(request):
 #    return render(request, 'organizer/startup_list.html', {'startup_list': Startup.objects.all()})
@@ -141,7 +142,8 @@ def startup_detail(request, slug):
 """
 
 class StartupDetail(DetailView):
-    model = Startup
+    #model = Startup
+    queryset = (Startup.objects.all().prefetch_related('tags').prefetch_related('newslink_set').prefetch_related('blog_posts'))
 
 """
 def tag_create(request):

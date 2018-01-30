@@ -1,0 +1,10 @@
+[
+{
+  "model": "sites.site",
+  "pk": 1,
+  "fields": {
+    "domain": "site.django-unleashed.com",
+    "name": "Startup Organizer"
+  }
+}
+]

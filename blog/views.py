@@ -36,7 +36,8 @@ def post_detail(request, year, month, slug):
 """
 class PostDetail(DateObjectMixin, DetailView):
     date_field = 'pub_date'
-    model = Post
+    queryset = (Post.objects.select_related('author__profile').prefetch_related('startups').prefetch_related('tags'))
+    #model = Post
 
 @require_authenticated_permission('blog.add_post')
 class PostCreate(PostFormValidMixin, CreateView):
