@@ -44,6 +44,17 @@ class Post(models.Model):
     def get_archive_month_url(self):
         return reverse('blog_post_archive_month', kwargs={'year': self.pub_date.year, 'month': self.pub_date.month})
 
+    def formatted_title(self):
+        return self.title.title()
+
+    def short_text(self):
+        if len(self.text) > 20:
+            short = ' '.join(self.text.split()[:20])
+            short += ' ...'
+        else:
+            short = self.text
+        return short
+
     def natural_key(self):
         return (self.pub_date, self.slug)
     natural_key.dependencies = [

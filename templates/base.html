@@ -17,6 +17,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'site/normalize.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'site/skeleton.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'site/style.css' %}" />
+    <link rel="alternate" href="{% url 'blog_rss_feed' %}" media="screen" title="Blog News RSS" type="application/rss+xml">
+    <link rel="alternate" href="{% url 'blog_atom_feed' %}" media="screen" title="Blog News Atom" type="application/atom+xml">
     {% block head %}{% endblock %}
   </head>
 
@@ -74,6 +76,11 @@
     </div><!-- container -->
 
     <footer>
+      <ul>
+        <li><a href="{% url 'blog_rss_feed' %}" class="feed">Blog RSS Feed</a></li>
+        <li><a href="{% url 'blog_atom_feed' %}" class="feed">Blog Atom Feed</a></li>
+        <li><a href="{% url 'sitemap' %}">Sitemap</a></li>
+      </ul>
       <p>
         &copy; 2015
         <a href="https://AndrewsForge.com/">

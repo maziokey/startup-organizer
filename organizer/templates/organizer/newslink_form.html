@@ -1,17 +1,22 @@
 {% extends parent_template|default:"organizer/base_organizer.html" %}
+{% load display_form %}
 
 {% block title %}
 {{ block.super }} - Link News Articles to Startup
 {% endblock %}
 
 {% block content %}
-  <div>
-    <div>
-      <form action="{{ startup.get_newslink_create_url }}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Link Article</button>
-      </form>
-    </div>
-  </div>
+  {% url 'organizer_newslink_create' as form_url %}
+  {% form form_url 'Create Newlink' %}
 {% endblock %}
+<!--
+<div>
+  <div>
+    <form action="{{ startup.get_newslink_create_url }}" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Link Article</button>
+    </form>
+  </div>
+</div>
+-->

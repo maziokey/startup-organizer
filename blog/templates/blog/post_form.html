@@ -1,17 +1,22 @@
 {% extends parent_template|default:"organizer/base_organizer.html" %}
+{% load display_form %}
 
 {% block title %}
 {{ block.super }} - Create Blog Post
 {% endblock %}
 
 {% block content %}
-  <div>
-    <div>
-      <form action="{% url 'blog_post_create' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Create Blog Post</button>
-      </form>
-    </div>
-  </div>
+  {% url 'blog_post_create' as form_url %}
+  {% form form_url 'Create Blog Post' %}
 {% endblock %}
+<!--
+<div>
+  <div>
+    <form action="{% url 'blog_post_create' %}" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Create Blog Post</button>
+    </form>
+  </div>
+</div>
+-->

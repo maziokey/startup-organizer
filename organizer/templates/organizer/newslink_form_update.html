@@ -1,10 +1,14 @@
 {% extends parent_template|default:"organizer/base_organizer.html" %}
+{% load display_form %}
 
 {% block title %}
 {{ block.super }} - Update News Articles
 {% endblock %}
 
 {% block content %}
+  {% form newslink.get_update_url 'Update Newslink' %}
+{% endblock %}
+<!--
 <div>
   <div>
     <form action="{{ newslink.get_update_url }}" method="post">
@@ -14,4 +18,4 @@
     </form>
   </div>
 </div>
-{% endblock %}
+-->

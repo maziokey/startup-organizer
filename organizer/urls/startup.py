@@ -1,5 +1,6 @@
 from django.conf.urls import url
 
+from ..feeds import AtomStartupFeed, Rss2StartupFeed
 from ..views import StartupCreate, StartupDelete, StartupUpdate, StartupList, StartupDetail, NewsLinkCreate, NewsLinkUpdate, NewsLinkDelete
 
 urlpatterns = [
@@ -11,4 +12,6 @@ urlpatterns = [
     url(r'^(?P<startup_slug>[\w\-]+)/'r'(?P<newslink_slug>[\w\-]+)/'r'delete/$', NewsLinkDelete.as_view(), name='organizer_newslink_delete'),
     url(r'^(?P<slug>[\w\-]+)/update/$', StartupUpdate.as_view(), name='organizer_startup_update'),
     url(r'^(?P<startup_slug>[\w\-]+)/'r'(?P<newslink_slug>[\w\-]+)/'r'update/$', NewsLinkUpdate.as_view(), name='organizer_newslink_update'),
+    url(r'^(?P<startup_slug>[\w\-]+)/atom/$', AtomStartupFeed(), name='organizer_startup_atom_feed'),
+    url(r'^(?P<startup_slug>[\w\-]+)/rss/$', Rss2StartupFeed(), name='organizer_startup_rss_feed'),
 ]

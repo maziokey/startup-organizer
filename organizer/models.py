@@ -1,5 +1,5 @@
 from datetime import date
-
+from urllib.parse import urlparse
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property
@@ -70,6 +70,12 @@ class Startup(models.Model):
     def get_newslink_create_url(self):
         return reverse('organizer_newslink_create', kwargs={'startup_slug': self.slug})
 
+    def get_feed_atom_url(self):
+        return reverse('organizer_startup_atom_feed', kwargs={'startup_slug': self.slug})
+
+    def get_feed_rss_url(self):
+        return reverse('organizer_startup_rss_feed', kwargs={'startup_slug': self.slug})
+
     @cached_property
     def published_posts(self):
         return tuple(self.blog_posts.filter(pub_date__lt=date.today()))
@@ -112,6 +118,9 @@ class NewsLink(models.Model):
         return (self.startup.natural_key(), self.slug)
 
     natural_key.dependencies = ['organizer.startup']
+
+    def description(self):
+        return ("Wtitten on {0:%A, %B} {0.day}, {0:%Y}; hosted at {1}".format(self.pub_date, urlparse(self.link).netloc))
 
     class Meta:
         verbose_name = 'news article'

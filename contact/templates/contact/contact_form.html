@@ -1,17 +1,22 @@
 {% extends parent_template|default:"contact/base_contact.html" %}
+{% load display_form %}
 
 {% block title %}
 {{ block.super }} - Contact Us!
 {% endblock %}
 
 {% block content %}
-  <div class="">
-    <div class="">
-      <form class="" action="{% url 'contact' %}" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Contact Us</button>
-      </form>
-    </div>
-  </div>
+  {% url 'contact' as form_url %}
+  {% form form_url 'Contact Us' %}
 {% endblock %}
+<!--
+<div class="">
+  <div class="">
+    <form class="" action="{% url 'contact' %}" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Contact Us</button>
+    </form>
+  </div>
+</div>
+-->
